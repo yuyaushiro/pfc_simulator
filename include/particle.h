@@ -8,7 +8,7 @@
 #include "pose.h"
 
 
-// モンテカルロローカライゼーション
+/// パーティクル
 class Particle
 {
 public:
