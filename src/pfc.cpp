@@ -19,14 +19,14 @@ Pfc::Pfc(const std::vector<CmdVel>& cmdVels, const StateSpace& ss, double magnit
 
 // 意思決定
 //------------------------------------------------------------------------------
-CmdVel Pfc::decisionMaking(const std::vector<Particle>& particles)
+CmdVel Pfc::decisionMaking(std::vector<Particle>& particles, double dt)
 {
   // 行動価値のリスト
   std::vector<double> actionValues(cmdVels_.size());
   for (int i = 0; i < cmdVels_.size(); i++)
   {
     actionValues[i] = evaluateAction(cmdVels_[i], particles);
-    // std::cout << actionValues[i] << std::endl;
+    std::cout << actionValues[i] << std::endl;
   }
 
   // argmax
@@ -35,6 +35,13 @@ CmdVel Pfc::decisionMaking(const std::vector<Particle>& particles)
   // std::cout << maxIndex << std::endl;
   std::cout << std::endl;
 
+  // 回避重みを更新する
+  for (int i = 0; i < particles.size(); i++)
+  {
+    particles[i].decreaseAvoidanceWeight(dt);
+    particles[i].updateAvoidanceWeight(maxIndex);
+  }
+
   CmdVel cmdVel = cmdVels_[maxIndex];
   return cmdVel;
 }
@@ -42,9 +49,8 @@ CmdVel Pfc::decisionMaking(const std::vector<Particle>& particles)
 
 // 行動の評価（Q-PFCの計算）
 //------------------------------------------------------------------------------
-double Pfc::evaluateAction(const CmdVel& cmdVel, const std::vector<Particle>& particles)
+double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particles)
 {
-  double dt = 0.1;
   // 行動価値
   double reward = 0.0;
   double postValue = 0.0;
@@ -53,17 +59,21 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, const std::vector<Particle>& pa
   for (int i = 0; i < particles.size(); i++)
   {
     Pose pose = particles[i].pose_;
-    // double value = ss_.getValue(pose);
-    // Pose poseNext = Robot::transitionState(cmdVel, dt, pose);
-    // double valueNext = ss_.getValue(poseNext);
 
-    // actionValue += (valueNext + 1000*dt) / std::pow(value, magnitude_);
-    // std::cout << ss_.getActionValue(pose, cmdVel) << std::endl;
-
+    // 次の状態の価値
     postValue = ss_.getPosteriorValue(pose, cmdVel);
+    // 状態遷移の報酬
     reward = ss_.getReward(pose, cmdVel);
+    // 行動価値
     actionValue = postValue + reward;
-    pfcValue += actionValue / std::pow(ss_.getValue(pose), magnitude_);
+
+    // 回避重み
+    particles[i].addAvoidanceWeightCandidate(reward);
+    double avoidWeight = particles[i].getAvoidanceWeight();
+
+    pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_ - avoidWeight);
+    // pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_);
+    // pfcValue += actionValue;
   }
   return pfcValue;
 }

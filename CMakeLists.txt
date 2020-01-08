@@ -18,6 +18,7 @@ link_directories(${PNG_LIBRARY_DIRS})
 
 add_executable(simulator.out
   src/main.cpp
+  src/avoidance.cpp
   src/circle.cpp
   src/cmd_vel.cpp
   src/goal.cpp

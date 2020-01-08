@@ -21,6 +21,7 @@ Particle::Particle(Pose& initialPose, double weight)
   : pose_(initialPose)
   , weight_(weight)
   , radius_(0.02)
+  , avoidance_(Avoidance(10.0))
 {}
 
 
@@ -37,6 +38,38 @@ void Particle::transitionStateWithNoise(CmdVel& cmdVel, double dt, const std::ve
 }
 
 
+// 回避重みの取得
+//------------------------------------------------------------------------------
+double Particle::getAvoidanceWeight()
+{
+  return avoidance_.getWeight();
+}
+
+
+// 回避重みの候補を追加
+//------------------------------------------------------------------------------
+void Particle::addAvoidanceWeightCandidate(double reward)
+{
+  avoidance_.addWeightCandidate(reward);
+}
+
+
+// 回避重みの更新
+//------------------------------------------------------------------------------
+void Particle::updateAvoidanceWeight(int candidateIndex)
+{
+  avoidance_.updateWeight(candidateIndex);
+}
+
+
+// 重みの減少
+//------------------------------------------------------------------------------
+void Particle::decreaseAvoidanceWeight(double dt)
+{
+  avoidance_.decreaseWeight(dt);
+}
+
+
 // 描画
 //------------------------------------------------------------------------------
 void Particle::draw()
@@ -48,10 +81,14 @@ void Particle::draw()
     glTranslated(pose_.x, pose_.y, 0.0);
     glRotated(pose_.theta*180/M_PI, 0, 0, 1);
     // 方向の描画
-    glColor4f(0.5f, 0.5f, 1.0f, 0.5f);
+    (avoidance_.getWeight() == 0.0) ?
+      glColor4f(0.5f, 0.5f, 1.0f, 0.5f) :
+      glColor4f(1.0f, 0.5f, 0.5f, 0.5f);
     rotation.draw();
     // 位置の描画
-    glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
+    (avoidance_.getWeight() == 0.0) ?
+      glColor4f(0.0f, 0.0f, 1.0f, 0.5f) :
+      glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
     glRectf(-radius_, -radius_, radius_, radius_);
   glPopMatrix();
 }

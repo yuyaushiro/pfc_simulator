@@ -37,8 +37,8 @@ int main(int argc, const char *argv[])
                 std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose, cmdVel);
 
 
-  Pose initPose(-2, -2, -M_PI/6);
-  Mcl mcl(initPose, 1);
+  Pose initPose(-1, -1, -M_PI/6);
+  Mcl mcl(initPose, 1000);
   Pfc pfc(cmdVel, ss, 2.0);
   Robot robot(initPose, mcl, pfc);
 
@@ -49,6 +49,7 @@ int main(int argc, const char *argv[])
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - prevTime;
 
+    // robot.oneStep(0.1);
     robot.oneStep(elapsedTime);
 
     // バッファのクリア

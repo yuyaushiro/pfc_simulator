@@ -6,6 +6,7 @@
 
 #include "cmd_vel.h"
 #include "pose.h"
+#include "avoidance.h"
 
 
 /// パーティクル
@@ -22,6 +23,18 @@ public:
   /// 動作による更新
   void transitionStateWithNoise(CmdVel& cmdVel, double dt, const std::vector<double>& ns);
 
+  /// 回避重みの取得
+  double getAvoidanceWeight();
+
+  /// 回避重みの候補を追加
+  void addAvoidanceWeightCandidate(double reward);
+
+  /// 回避重みの更新
+  void updateAvoidanceWeight(int candidateIndex);
+
+  /// 重みの減少
+  void decreaseAvoidanceWeight(double dt);
+
   /// 描画
   void draw();
 
@@ -34,4 +47,7 @@ private:
 
   /// 半径
   double radius_;
+
+  /// 回避
+  Avoidance avoidance_;
 };

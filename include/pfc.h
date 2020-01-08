@@ -19,10 +19,10 @@ public:
   ~Pfc() = default;
 
   /// 意思決定
-  CmdVel decisionMaking(const std::vector<Particle>& particles);
+  CmdVel decisionMaking(std::vector<Particle>& particles, double dt);
 
   /// 行動の評価（Q-PFCの計算）
-  double evaluateAction(const CmdVel& cmdVel, const std::vector<Particle>& particles);
+  double evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particles);
 
 private:
   /// 行動リスト

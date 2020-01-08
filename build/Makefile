@@ -123,6 +123,33 @@ simulator.out/fast:
 	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/build
 .PHONY : simulator.out/fast
 
+src/avoidance.o: src/avoidance.cpp.o
+
+.PHONY : src/avoidance.o
+
+# target to build an object file
+src/avoidance.cpp.o:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/avoidance.cpp.o
+.PHONY : src/avoidance.cpp.o
+
+src/avoidance.i: src/avoidance.cpp.i
+
+.PHONY : src/avoidance.i
+
+# target to preprocess a source file
+src/avoidance.cpp.i:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/avoidance.cpp.i
+.PHONY : src/avoidance.cpp.i
+
+src/avoidance.s: src/avoidance.cpp.s
+
+.PHONY : src/avoidance.s
+
+# target to generate assembly for a file
+src/avoidance.cpp.s:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/avoidance.cpp.s
+.PHONY : src/avoidance.cpp.s
+
 src/circle.o: src/circle.cpp.o
 
 .PHONY : src/circle.o
@@ -510,6 +537,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... simulator.out"
+	@echo "... src/avoidance.o"
+	@echo "... src/avoidance.i"
+	@echo "... src/avoidance.s"
 	@echo "... src/circle.o"
 	@echo "... src/circle.i"
 	@echo "... src/circle.s"
