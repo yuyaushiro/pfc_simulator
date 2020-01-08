@@ -33,4 +33,7 @@ private:
 
   /// 分母指数部
   double magnitude_;
+
+  /// 行動の履歴
+  std::vector<CmdVel> history_;
 };

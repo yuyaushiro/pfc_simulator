@@ -14,6 +14,7 @@ Pfc::Pfc(const std::vector<CmdVel>& cmdVels, const StateSpace& ss, double magnit
   : cmdVels_(cmdVels)
   , ss_(ss)
   , magnitude_(magnitude)
+  , history_{cmdVels[0]}
 {}
 
 
@@ -43,6 +44,13 @@ CmdVel Pfc::decisionMaking(std::vector<Particle>& particles, double dt)
   }
 
   CmdVel cmdVel = cmdVels_[maxIndex];
+  // 行動がループ
+  if (cmdVels_[maxIndex].nu + history_.back().nu == 0 && cmdVels_[maxIndex].omega + history_.back().omega == 0)
+    cmdVel = cmdVels_[0];
+
+  // 行動の履歴を追加
+  history_.push_back(cmdVel);
+
   return cmdVel;
 }
 
