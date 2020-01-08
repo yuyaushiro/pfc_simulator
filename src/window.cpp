@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 #include "window.h"
 
 
@@ -68,8 +70,8 @@ const GLfloat* Window::getSize() const
 // ウィンドウのサイズ変更時の処理
 void Window::resize(GLFWwindow *const window, int width, int height)
 {
-  float y_range = 10.0;
-  float x_range = y_range * width/height;
+  float yRange = 10.0;
+  float xRange = yRange * width/height;
 
   // Retina Display 用の処理
   int fw, fh;
@@ -80,8 +82,8 @@ void Window::resize(GLFWwindow *const window, int width, int height)
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glOrtho(-x_range/2, x_range/2,
-          -y_range/2, y_range/2,
+  glOrtho(-xRange/2, xRange/2,
+          -yRange/2, yRange/2,
           -1.0, 1.0);
 
 }
