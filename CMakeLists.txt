@@ -29,6 +29,7 @@ add_executable(simulator.out
   src/point.cpp
   src/pose.cpp
   src/robot.cpp
+  src/simulator.cpp
   src/state_space.cpp
   src/state.cpp
   src/window.cpp

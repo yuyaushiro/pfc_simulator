@@ -9,7 +9,6 @@
 #include "robot.h"
 #include "pfc.h"
 #include "mcl.h"
-#include "simulator.h"
 
 
 int main(int argc, const char *argv[])
@@ -37,14 +36,38 @@ int main(int argc, const char *argv[])
   StateSpace ss(std::string("CorridorGimp_100x100x36"), std::vector<int>{100, 100, 36},
                 std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose, cmdVels);
 
-  Pose initPose(1, -1, M_PI/2);
+
+  Pose initPose(-1, -1, M_PI/2);
   Mcl mcl(initPose, 1000);
   Pfc pfc(cmdVels, ss, 2.0);
   Robot robot(initPose, goal, mcl, pfc);
 
-  // シミュレーション
-  Simulator simulator(window, robot, goal);
-  simulator.run(true);
+  double prevTime = glfwGetTime();
+  // 描画のループ
+  while (window)
+  {
+    double currentTime = glfwGetTime();
+    double elapsedTime = currentTime - prevTime;
+
+    robot.oneStep(0.1);
+    // robot.oneStep(elapsedTime);
+
+    // バッファのクリア
+    glClearColor(0.9f, 0.9f, 0.9f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    goal.draw();
+    robot.draw();
+
+    if (goal.inside(robot.getPose()))
+      std::cout << "Goal" << std::endl;
+
+    // ダブルバッファのスワップ
+    window.swapBuffers();
+    glfwPollEvents();
+
+    prevTime = currentTime;
+  }
 
   // GLFWの終了処理
   glfwTerminate();

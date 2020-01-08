@@ -31,6 +31,9 @@ public:
   /// 姿勢の取得
   Pose getPose();
 
+  /// リスタート
+  void restart(const Pose& pose);
+
   /// 描画する
   void draw();
 

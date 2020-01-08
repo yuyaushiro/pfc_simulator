@@ -447,6 +447,33 @@ src/robot.cpp.s:
 	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/robot.cpp.s
 .PHONY : src/robot.cpp.s
 
+src/simulator.o: src/simulator.cpp.o
+
+.PHONY : src/simulator.o
+
+# target to build an object file
+src/simulator.cpp.o:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/simulator.cpp.o
+.PHONY : src/simulator.cpp.o
+
+src/simulator.i: src/simulator.cpp.i
+
+.PHONY : src/simulator.i
+
+# target to preprocess a source file
+src/simulator.cpp.i:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/simulator.cpp.i
+.PHONY : src/simulator.cpp.i
+
+src/simulator.s: src/simulator.cpp.s
+
+.PHONY : src/simulator.s
+
+# target to generate assembly for a file
+src/simulator.cpp.s:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/simulator.cpp.s
+.PHONY : src/simulator.cpp.s
+
 src/state.o: src/state.cpp.o
 
 .PHONY : src/state.o
@@ -573,6 +600,9 @@ help:
 	@echo "... src/robot.o"
 	@echo "... src/robot.i"
 	@echo "... src/robot.s"
+	@echo "... src/simulator.o"
+	@echo "... src/simulator.i"
+	@echo "... src/simulator.s"
 	@echo "... src/state.o"
 	@echo "... src/state.i"
 	@echo "... src/state.s"
