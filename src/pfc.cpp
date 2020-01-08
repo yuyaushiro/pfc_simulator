@@ -22,6 +22,7 @@ Pfc::Pfc(const std::vector<CmdVel>& cmdVels, const StateSpace& ss, double magnit
 //------------------------------------------------------------------------------
 CmdVel Pfc::decisionMaking(std::vector<Particle>& particles, double dt)
 {
+  std::cout << "---" << std::endl;
   // 行動価値のリスト
   std::vector<double> actionValues(cmdVels_.size());
   for (int i = 0; i < cmdVels_.size(); i++)
@@ -79,8 +80,8 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particle
     particles[i].addAvoidanceWeightCandidate(reward);
     double avoidWeight = particles[i].getAvoidanceWeight();
 
-    pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_ - avoidWeight);
-    // pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_);
+    // pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_ - avoidWeight);
+    pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_);
     // pfcValue += actionValue;
   }
   return pfcValue;

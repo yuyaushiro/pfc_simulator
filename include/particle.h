@@ -6,6 +6,7 @@
 
 #include "cmd_vel.h"
 #include "pose.h"
+#include "goal.h"
 #include "avoidance.h"
 
 
@@ -15,13 +16,19 @@ class Particle
 public:
   /// コンストラクタ
   Particle();
-  Particle(Pose& initialPose, double weight);
+  Particle(const Pose& initialPose, double weight);
 
   /// デストラクタ
   ~Particle() = default;
 
   /// 動作による更新
-  void transitionStateWithNoise(CmdVel& cmdVel, double dt, const std::vector<double>& ns);
+  void updateWithMotion(const CmdVel& cmdVel, double dt, const std::vector<double>& ns);
+
+  /// ゴール観測による更新
+  void updateWithGoalObservation(const Goal& goal);
+
+  /// 重みの取得
+  double getWeight();
 
   /// 回避重みの取得
   double getAvoidanceWeight();

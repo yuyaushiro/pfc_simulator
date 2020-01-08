@@ -5,6 +5,7 @@
 
 #include "particle.h"
 #include "pose.h"
+#include "goal.h"
 #include "cmd_vel.h"
 
 
@@ -14,13 +15,19 @@ class Mcl
 public:
   /// コンストラクタ
   Mcl();
-  Mcl(Pose& initialPose, int particleNum);
+  Mcl(const Pose& initialPose, int particleNum);
 
   /// デストラクタ
   ~Mcl() = default;
 
   /// モーションアップデート
-  void updateWithMotion(CmdVel& cmdVel, double dt);
+  void updateWithMotion(const CmdVel& cmdVel, double dt);
+
+  /// ゴール観測によるアップデート
+  void updateWithGoalObservation(const Goal& goal);
+
+  /// リサンプリング
+  void resampling();
 
   /// 描画
   void draw();

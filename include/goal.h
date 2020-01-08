@@ -14,7 +14,7 @@ public:
   Goal(const Pose& pose, double radius);
 
   /// ゴールに入っているか判定
-  bool inside(const Pose& pose);
+  bool inside(const Pose& pose) const;
 
   /// 描画
   void draw();

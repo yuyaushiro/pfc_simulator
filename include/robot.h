@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include "cmd_vel.h"
+#include "goal.h"
 #include "mcl.h"
 #include "pfc.h"
 #include "pose.h"
@@ -14,8 +15,11 @@ class Robot
 public:
   /// コンストラクタ
   Robot();
-  Robot(const Pose& initialPose, const Mcl& mcl, const Pfc& pfc);
 
+  /// コンストラクタ
+  Robot(const Pose& initialPose, const Goal& goal, const Mcl& mcl, const Pfc& pfc);
+
+  /// デストラクタ
   ~Robot() = default;
 
   /// 状態を遷移させる
@@ -33,6 +37,9 @@ public:
 private:
   /// 姿勢
   Pose pose_;
+
+  /// ゴール
+  Goal goal_;
 
   /// 推定器
   Mcl mcl_;

@@ -32,7 +32,10 @@ StateSpace::StateSpace(const std::string& fileName, const std::vector<int>& cell
 // 状態価値を取得
 double StateSpace::getValue(const Pose& pose) const
 {
-  return -( state_[toStateIndex(pose)].getValue() * 0.001 );
+  double value = -( state_[toStateIndex(pose)].getValue() * 0.001 );
+  if (value == 0.0)
+    value = -1e-10;
+  return value;
 }
 
 

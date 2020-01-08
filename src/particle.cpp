@@ -17,7 +17,7 @@ Particle::Particle()
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-Particle::Particle(Pose& initialPose, double weight)
+Particle::Particle(const Pose& initialPose, double weight)
   : pose_(initialPose)
   , weight_(weight)
   , radius_(0.02)
@@ -27,7 +27,7 @@ Particle::Particle(Pose& initialPose, double weight)
 
 // 動作による更新
 //------------------------------------------------------------------------------
-void Particle::transitionStateWithNoise(CmdVel& cmdVel, double dt, const std::vector<double>& ns)
+void Particle::updateWithMotion(const CmdVel& cmdVel, double dt, const std::vector<double>& ns)
 {
   double pnu = cmdVel.nu + ns[0]*sqrt(abs(cmdVel.nu)/dt) + ns[1]*sqrt(abs(cmdVel.omega)/dt);
   double pomega = cmdVel.omega + ns[2]*sqrt(abs(cmdVel.nu)/dt) + ns[3]*sqrt(abs(cmdVel.omega)/dt);
@@ -35,6 +35,23 @@ void Particle::transitionStateWithNoise(CmdVel& cmdVel, double dt, const std::ve
   // ノイズを含んだ行動
   CmdVel noisyCmdVel(pnu, pomega, "");
   pose_ = Robot::transitionState(noisyCmdVel, dt, pose_);
+}
+
+
+// ゴール観測による更新
+//------------------------------------------------------------------------------
+void Particle::updateWithGoalObservation(const Goal& goal)
+{
+  if (goal.inside(pose_))
+    weight_ *= 1e-10;
+}
+
+
+// 重みの取得
+//------------------------------------------------------------------------------
+double Particle::getWeight()
+{
+  return weight_;
 }
 
 

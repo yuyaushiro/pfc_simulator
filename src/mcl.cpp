@@ -12,7 +12,7 @@ Mcl::Mcl()
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-Mcl::Mcl(Pose& initialPose, int particleNum)
+Mcl::Mcl(const Pose& initialPose, int particleNum)
   : particleNum_(particleNum)
 {
   // 乱数生成
@@ -27,7 +27,8 @@ Mcl::Mcl(Pose& initialPose, int particleNum)
   for (int i = 0; i < particleNum_; i++)
   {
     Pose pose(x_dist(mt), y_dist(mt), theta_dist(mt));
-    Particle p(pose, 1/particleNum_);
+    double weight = 1.0/particleNum_;
+    Particle p(pose, weight);
     particles_[i] = p;
   }
 }
@@ -35,24 +36,69 @@ Mcl::Mcl(Pose& initialPose, int particleNum)
 
 // 動作による更新
 //------------------------------------------------------------------------------
-void Mcl::updateWithMotion(CmdVel& cmdVel, double dt)
+void Mcl::updateWithMotion(const CmdVel& cmdVel, double dt)
 {
   //乱数生成クラス
   std::random_device rnd;
   std::mt19937 mt(rnd());
-  std::normal_distribution<> normal(0, 0.03);
+  std::normal_distribution<> normal(0, 0.01);
 
   for (int i = 0; i < particleNum_; i++)
   {
-    // 乱数生成
+    // 乱数生成j
     std::vector<double> ns(4);
     for (int j = 0; j < 4; j++)
     {
       ns[j] = normal(mt);
     }
-    particles_[i].transitionStateWithNoise(cmdVel, dt, ns);
+    particles_[i].updateWithMotion(cmdVel, dt, ns);
   }
-  std::cout << "---" << std::endl;
+}
+
+
+// ゴール観測によるアップデート
+//------------------------------------------------------------------------------
+void Mcl::updateWithGoalObservation(const Goal& goal)
+{
+  for (int i = 0; i < particleNum_; i++)
+  {
+    particles_[i].updateWithGoalObservation(goal);
+  }
+}
+
+
+// リサンプリング
+//------------------------------------------------------------------------------
+void Mcl::resampling()
+{
+  double weightSum = 0.0;
+  // 重み合計
+  for (int i = 0; i < particleNum_; i++)
+    weightSum += particles_[i].getWeight();
+
+  //乱数生成クラス
+  std::random_device rnd;
+  std::mt19937 mt(rnd());
+  std::uniform_real_distribution<double> dist(0, weightSum/particleNum_);
+
+  std::vector<Particle> newParticles(particleNum_);
+
+  double r = dist(mt);
+  double c = particles_[0].getWeight();
+  double i = 0;
+
+  double U;
+  for (int m = 0; m < particleNum_; m++)
+  {
+    U = r + m * weightSum/particleNum_;
+    while (U > c)
+    {
+      i++;
+      c += particles_[i].getWeight();
+    }
+    newParticles[m] = particles_[i];
+  }
+  particles_ = newParticles;
 }
 
 

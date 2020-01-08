@@ -23,9 +23,11 @@ Goal::Goal(const Pose& pose, double radius)
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-bool Goal::inside(const Pose& pose)
+bool Goal::inside(const Pose& pose) const
 {
-  return radius_ > sqrt(pow(pose_.x-pose.x, 2) + pow(pose_.y-pose.y, 2));
+  double xDist = pose_.x - pose.x;
+  double yDist = pose_.y - pose.y;
+  return radius_ > sqrt(pow(xDist, 2) + pow(yDist, 2));
 }
 
 

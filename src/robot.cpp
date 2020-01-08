@@ -12,8 +12,9 @@ Robot::Robot()
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-Robot::Robot(const Pose& initialPose, const Mcl& mcl, const Pfc& pfc)
+Robot::Robot(const Pose& initialPose, const Goal& goal, const Mcl& mcl, const Pfc& pfc)
   : pose_(initialPose)
+  , goal_(goal)
   , mcl_(mcl)
   , pfc_(pfc)
   , trajectory_{initialPose}
@@ -54,8 +55,16 @@ void Robot::oneStep(double dt)
 
   // 状態遷移
   pose_ = Robot::transitionState(cmdVel, dt, pose_);
-  // 推定器の motion update
+  // 推定器のモーションアップデート
   mcl_.updateWithMotion(cmdVel, dt);
+
+  // ロボットがゴールしていなければ
+  // if (!goal_.inside(pose_))
+    // 推定器のゴール観測によるアップデート
+    mcl_.updateWithGoalObservation(goal_);
+
+  // 推定器のリサンプリング
+  mcl_.resampling();
 
   // 軌跡の追加
   trajectory_.push_back(pose_);
