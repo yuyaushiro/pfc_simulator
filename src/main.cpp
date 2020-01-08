@@ -38,7 +38,7 @@ int main(int argc, const char *argv[])
 
 
   Pose initPose(-1, -1, -M_PI/6);
-  Mcl mcl(initPose, 1000);
+  Mcl mcl(initPose, 1);
   Pfc pfc(cmdVel, ss, 2.0);
   Robot robot(initPose, mcl, pfc);
 
@@ -58,6 +58,9 @@ int main(int argc, const char *argv[])
 
     robot.draw();
     goal.draw();
+
+    if (goal.inside(robot.getPose()))
+      std::cout << "Goal" << std::endl;
 
     // ダブルバッファのスワップ
     window.swapBuffers();

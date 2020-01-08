@@ -21,6 +21,11 @@ Pose::Pose(double initialX, double initialY, double initialTheta)
 
 // +演算子オーバーロード
 // ------------------------------------------------------------------------------
+
+
+
+// +演算子オーバーロード
+// ------------------------------------------------------------------------------
 Pose Pose::operator+(const Pose& pose) const
 {
   Pose tmp(this->x + pose.x, this->y + pose.y, this->theta + pose.theta);

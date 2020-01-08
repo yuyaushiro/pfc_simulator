@@ -1,6 +1,6 @@
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
-#include "cmath"
+#include <cmath>
 
 #include "goal.h"
 #include "circle.h"
@@ -19,6 +19,14 @@ Goal::Goal(const Pose& pose, double radius)
   : pose_(pose)
   , radius_(radius)
 {}
+
+
+// コンストラクタ
+//------------------------------------------------------------------------------
+bool Goal::inside(const Pose& pose)
+{
+  return radius_ > sqrt(pow(pose_.x-pose.x, 2) + pow(pose_.y-pose.y, 2));
+}
 
 
 // 描画

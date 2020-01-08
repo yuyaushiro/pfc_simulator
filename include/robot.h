@@ -24,6 +24,9 @@ public:
   /// 1ステップ進める
   void oneStep(double dt);
 
+  /// 姿勢の取得
+  Pose getPose();
+
   /// 描画する
   void draw();
 
