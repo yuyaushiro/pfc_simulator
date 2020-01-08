@@ -80,8 +80,8 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particle
     particles[i].addAvoidanceWeightCandidate(reward);
     double avoidWeight = particles[i].getAvoidanceWeight();
 
-    // pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_ - avoidWeight);
-    pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_);
+    pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_ - avoidWeight);
+    // pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_);
     // pfcValue += actionValue;
   }
   return pfcValue;
