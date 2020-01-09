@@ -28,14 +28,14 @@ CmdVel Pfc::decisionMaking(std::vector<Particle>& particles, double dt)
   for (int i = 0; i < cmdVels_.size(); i++)
   {
     actionValues[i] = evaluateAction(cmdVels_[i], particles);
-    std::cout << actionValues[i] << std::endl;
+    // std::cout << actionValues[i] << std::endl;
   }
 
   // argmax
   std::vector<double>::iterator maxIterator = std::max_element(actionValues.begin(), actionValues.end());
   int maxIndex = std::distance(actionValues.begin(), maxIterator);
   // std::cout << maxIndex << std::endl;
-  std::cout << std::endl;
+  // std::cout << std::endl;
 
   // 回避重みを更新する
   for (int i = 0; i < particles.size(); i++)

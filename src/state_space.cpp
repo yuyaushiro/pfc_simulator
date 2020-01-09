@@ -17,7 +17,7 @@ StateSpace::StateSpace(const std::string& fileName, const std::vector<int>& cell
                        const std::vector<double>& cellWidth, const Pose& minPose,
                        const std::vector<CmdVel>& cmdVels)
   : valueFileName_("../value/" + fileName + ".value")
-  , transFileName_("../trans/" + fileName + ".trans")
+  , transFileName_("../trans/" + fileName + ".transig")
   , cellNum_(cellNum)
   , cellWidth_(cellWidth)
   , minPose_(minPose)

@@ -22,7 +22,7 @@ Simulator::Simulator(const Window& window, const Robot& robot, const Goal& goal)
 //------------------------------------------------------------------------------
 void Simulator::run(bool display)
 {
-  Pose initPose(1, -1, M_PI/2);
+  Pose initPose(-1, -1, M_PI/2);
   double prevTime = glfwGetTime();
   while (window_)
   {
@@ -32,7 +32,8 @@ void Simulator::run(bool display)
       double currentTime = glfwGetTime();
       double elapsedTime = currentTime - prevTime;
 
-      robot_.oneStep(elapsedTime);
+      // robot_.oneStep(elapsedTime);
+      robot_.oneStep(0.1);
 
       // バッファのクリア
       glClearColor(0.9f, 0.9f, 0.9f, 0.0f);

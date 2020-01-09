@@ -32,12 +32,17 @@ int main(int argc, const char *argv[])
   // StateSpace ss(std::string("CorridorGimp_200x200x36"), std::vector<int>{200, 200, 36},
   //               std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose, cmdVel);
 
+  // Pose minPose(-2.5, -2.5, 0);
+  // Goal goal(Pose(6.75/2, 4.0, 0)+minPose, 0.15);
+  // StateSpace ss(std::string("CorridorGimp_100x100x18"), std::vector<int>{100, 100, 18},
+  //               std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose, cmdVels);
+
   Pose minPose(-2.5, -2.5, 0);
   Goal goal(Pose(6.75/2, 4.0, 0)+minPose, 0.15);
-  StateSpace ss(std::string("CorridorGimp_100x100x36"), std::vector<int>{100, 100, 36},
-                std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose, cmdVels);
+  StateSpace ss(std::string("Gimp2Corner_100x100x18"), std::vector<int>{100, 100, 18},
+                std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose, cmdVels);
 
-  Pose initPose(1, -1, M_PI/2);
+  Pose initPose(-1.75, 1, M_PI/2);
   Mcl mcl(initPose, 1000);
   Pfc pfc(cmdVels, ss, 2.0);
   Robot robot(initPose, goal, mcl, pfc);
