@@ -20,7 +20,7 @@ Mcl::Mcl(const Pose& initialPose, int particleNum)
   std::mt19937 mt(rnd());
   std::normal_distribution<double> x_dist(initialPose.x, 0.1);
   std::normal_distribution<double> y_dist(initialPose.y, 0.1);
-  std::normal_distribution<double> theta_dist(initialPose.theta, 0.1);
+  std::normal_distribution<double> theta_dist(initialPose.theta, 0.05);
 
   // パーティクルの初期化
   particles_.resize(particleNum_);
@@ -28,7 +28,8 @@ Mcl::Mcl(const Pose& initialPose, int particleNum)
   {
     Pose pose(x_dist(mt), y_dist(mt), theta_dist(mt));
     double weight = 1.0/particleNum_;
-    Particle p(pose, weight);
+    Avoidance avoidance(0.0, 4.0, 10.0);
+    Particle p(pose, weight, avoidance);
     particles_[i] = p;
   }
 }
@@ -93,10 +94,15 @@ void Mcl::resampling()
     U = r + m * weightSum/particleNum_;
     while (U > c)
     {
-      i++;
-      c += particles_[i].getWeight();
+      i = i + 1;
+      c = c + particles_[i].getWeight();
     }
     newParticles[m] = particles_[i];
+
+    // Pose pose = particles_[i].pose_;
+    // double weight = 1.0/particleNum_;
+    // Avoidance avoidance(particles_[i].getAvoidanceWeight(), 10.0, 10.0);
+    // newParticles[m] = Particle(pose, weight, avoidance);
   }
   particles_ = newParticles;
 }

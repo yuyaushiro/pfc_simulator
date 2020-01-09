@@ -17,11 +17,11 @@ Particle::Particle()
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-Particle::Particle(const Pose& initialPose, double weight)
+Particle::Particle(const Pose& initialPose, double weight, const Avoidance& avoidance)
   : pose_(initialPose)
   , weight_(weight)
   , radius_(0.02)
-  , avoidance_(Avoidance(10.0))
+  , avoidance_(avoidance)
 {}
 
 

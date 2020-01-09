@@ -12,7 +12,7 @@ public:
   Avoidance();
 
   /// コンストラクタ
-  Avoidance(double maxWeight);
+  Avoidance(double weight, double maxWeight, double decreaseTime);
 
   /// 重みの取得
   double getWeight();

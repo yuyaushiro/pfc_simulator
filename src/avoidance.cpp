@@ -9,11 +9,11 @@ Avoidance::Avoidance()
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-Avoidance::Avoidance(double maxWeight)
-  : weight_(0.0)
-  , minWeight_(weight_)
+Avoidance::Avoidance(double weight, double maxWeight, double decreaseTime)
+  : weight_(weight)
+  , minWeight_(0.0)
   , maxWeight_(maxWeight)
-  , decreaseTime_(10.0)
+  , decreaseTime_(decreaseTime)
 {}
 
 
@@ -35,7 +35,7 @@ double Avoidance::getWeight()
 void Avoidance::addWeightCandidate(double reward)
 {
   // 報酬が通常の遷移より小さい？
-  (reward < -0.1) ?
+  (reward < -0.5) ?
     weightCandidates_.push_back(maxWeight_) :
     weightCandidates_.push_back(minWeight_);
 }
@@ -45,8 +45,12 @@ void Avoidance::addWeightCandidate(double reward)
 //------------------------------------------------------------------------------
 void Avoidance::updateWeight(int candidateIndex)
 {
-  weight_ = std::max(weight_, weightCandidates_[candidateIndex]);
+  std::vector<double>::iterator maxIterator =
+    std::max_element(weightCandidates_.begin(), weightCandidates_.end());
+  weight_ = std::max(weight_, *maxIterator);
   weightCandidates_.resize(0);
+  // weight_ = std::max(weight_, weightCandidates_[candidateIndex]);
+  // weightCandidates_.resize(0);
 }
 
 

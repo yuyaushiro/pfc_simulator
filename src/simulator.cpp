@@ -57,7 +57,7 @@ void Simulator::run(bool display)
     if (goal_.inside(robot_.getPose()))
     {
       std::cout << "Goal" << std::endl;
-      robot_.restart(initPose);
+      // robot_.restart(initPose);
     }
   }
 }

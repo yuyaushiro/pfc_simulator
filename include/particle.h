@@ -16,7 +16,7 @@ class Particle
 public:
   /// コンストラクタ
   Particle();
-  Particle(const Pose& initialPose, double weight);
+  Particle(const Pose& initialPose, double weight, const Avoidance& avoidance);
 
   /// デストラクタ
   ~Particle() = default;
