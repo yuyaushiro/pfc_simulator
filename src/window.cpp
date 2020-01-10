@@ -70,7 +70,7 @@ const GLfloat* Window::getSize() const
 // ウィンドウのサイズ変更時の処理
 void Window::resize(GLFWwindow *const window, int width, int height)
 {
-  float yRange = 10.0;
+  float yRange = 5.0;
   float xRange = yRange * width/height;
 
   // Retina Display 用の処理

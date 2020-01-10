@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <GLFW/glfw3.h>
+#include <opencv2/opencv.hpp>
 
 #include "window.h"
 #include "state_space.h"
@@ -38,7 +39,7 @@ int main(int argc, const char *argv[])
   //               std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose, cmdVels);
 
   Pose minPose(-2.5, -2.5, 0);
-  Goal goal(Pose(6.75/2, 4.0, 0)+minPose, 0.2);
+  Goal goal(Pose(3.5, 4.0, 0)+minPose, 0.15);
   StateSpace ss(std::string("Gimp2Corner_100x100x18"), std::vector<int>{100, 100, 18},
                 std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose, cmdVels);
 
