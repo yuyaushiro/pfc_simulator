@@ -10,9 +10,9 @@ Pfc::Pfc()
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-Pfc::Pfc(const std::vector<CmdVel>& cmdVels, const StateSpace& ss, double magnitude)
+Pfc::Pfc(const std::vector<CmdVel>& cmdVels, const State& state, double magnitude)
   : cmdVels_(cmdVels)
-  , ss_(ss)
+  , state_(state)
   , magnitude_(magnitude)
   , history_{cmdVels[0]}
 {}
@@ -22,7 +22,7 @@ Pfc::Pfc(const std::vector<CmdVel>& cmdVels, const StateSpace& ss, double magnit
 //------------------------------------------------------------------------------
 CmdVel Pfc::decisionMaking(std::vector<Particle>& particles, double dt)
 {
-  std::cout << "---" << std::endl;
+  // std::cout << "---" << std::ndl;
   // 行動価値のリスト
   std::vector<double> actionValues(cmdVels_.size());
   for (int i = 0; i < cmdVels_.size(); i++)
@@ -70,9 +70,9 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particle
     Pose pose = particles[i].pose_;
 
     // 次の状態の価値
-    postValue = ss_.getPosteriorValue(pose, cmdVel);
+    postValue = state_.getPosteriorValue(pose, cmdVel);
     // 状態遷移の報酬
-    reward = ss_.getReward(pose, cmdVel);
+    reward = state_.getReward(pose, cmdVel);
     // 行動価値
     actionValue = postValue + reward;
 
@@ -80,9 +80,12 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particle
     particles[i].addAvoidanceWeightCandidate(reward);
     double avoidWeight = particles[i].getAvoidanceWeight();
 
-    pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_ - avoidWeight);
-    // pfcValue += actionValue / std::pow(abs(ss_.getValue(pose)), magnitude_);
-    // pfcValue += actionValue;
+    pfcValue += actionValue / std::pow(abs(state_.getValue(pose)), magnitude_ - avoidWeight);
+
+    // double value = state_.getValue(pose);
+    // Pose poseNext = Robot::transitionState(cmdVel, 0.1, pose);
+    // double valueNext = state_.getValue(poseNext);
+    // pfcValue += (valueNext - 0.1) / std::pow(value, magnitude_);
   }
   return pfcValue;
 }

@@ -231,6 +231,33 @@ src/goal.cpp.s:
 	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/goal.cpp.s
 .PHONY : src/goal.cpp.s
 
+src/grid_map.o: src/grid_map.cpp.o
+
+.PHONY : src/grid_map.o
+
+# target to build an object file
+src/grid_map.cpp.o:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/grid_map.cpp.o
+.PHONY : src/grid_map.cpp.o
+
+src/grid_map.i: src/grid_map.cpp.i
+
+.PHONY : src/grid_map.i
+
+# target to preprocess a source file
+src/grid_map.cpp.i:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/grid_map.cpp.i
+.PHONY : src/grid_map.cpp.i
+
+src/grid_map.s: src/grid_map.cpp.s
+
+.PHONY : src/grid_map.s
+
+# target to generate assembly for a file
+src/grid_map.cpp.s:
+	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/grid_map.cpp.s
+.PHONY : src/grid_map.cpp.s
+
 src/line.o: src/line.cpp.o
 
 .PHONY : src/line.o
@@ -447,33 +474,6 @@ src/robot.cpp.s:
 	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/robot.cpp.s
 .PHONY : src/robot.cpp.s
 
-src/simulator.o: src/simulator.cpp.o
-
-.PHONY : src/simulator.o
-
-# target to build an object file
-src/simulator.cpp.o:
-	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/simulator.cpp.o
-.PHONY : src/simulator.cpp.o
-
-src/simulator.i: src/simulator.cpp.i
-
-.PHONY : src/simulator.i
-
-# target to preprocess a source file
-src/simulator.cpp.i:
-	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/simulator.cpp.i
-.PHONY : src/simulator.cpp.i
-
-src/simulator.s: src/simulator.cpp.s
-
-.PHONY : src/simulator.s
-
-# target to generate assembly for a file
-src/simulator.cpp.s:
-	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/simulator.cpp.s
-.PHONY : src/simulator.cpp.s
-
 src/state.o: src/state.cpp.o
 
 .PHONY : src/state.o
@@ -500,33 +500,6 @@ src/state.s: src/state.cpp.s
 src/state.cpp.s:
 	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/state.cpp.s
 .PHONY : src/state.cpp.s
-
-src/state_space.o: src/state_space.cpp.o
-
-.PHONY : src/state_space.o
-
-# target to build an object file
-src/state_space.cpp.o:
-	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/state_space.cpp.o
-.PHONY : src/state_space.cpp.o
-
-src/state_space.i: src/state_space.cpp.i
-
-.PHONY : src/state_space.i
-
-# target to preprocess a source file
-src/state_space.cpp.i:
-	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/state_space.cpp.i
-.PHONY : src/state_space.cpp.i
-
-src/state_space.s: src/state_space.cpp.s
-
-.PHONY : src/state_space.s
-
-# target to generate assembly for a file
-src/state_space.cpp.s:
-	$(MAKE) -f CMakeFiles/simulator.out.dir/build.make CMakeFiles/simulator.out.dir/src/state_space.cpp.s
-.PHONY : src/state_space.cpp.s
 
 src/window.o: src/window.cpp.o
 
@@ -576,6 +549,9 @@ help:
 	@echo "... src/goal.o"
 	@echo "... src/goal.i"
 	@echo "... src/goal.s"
+	@echo "... src/grid_map.o"
+	@echo "... src/grid_map.i"
+	@echo "... src/grid_map.s"
 	@echo "... src/line.o"
 	@echo "... src/line.i"
 	@echo "... src/line.s"
@@ -600,15 +576,9 @@ help:
 	@echo "... src/robot.o"
 	@echo "... src/robot.i"
 	@echo "... src/robot.s"
-	@echo "... src/simulator.o"
-	@echo "... src/simulator.i"
-	@echo "... src/simulator.s"
 	@echo "... src/state.o"
 	@echo "... src/state.i"
 	@echo "... src/state.s"
-	@echo "... src/state_space.o"
-	@echo "... src/state_space.i"
-	@echo "... src/state_space.s"
 	@echo "... src/window.o"
 	@echo "... src/window.i"
 	@echo "... src/window.s"

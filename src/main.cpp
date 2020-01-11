@@ -2,15 +2,12 @@
 
 #include <iostream>
 #include <GLFW/glfw3.h>
-#include <opencv2/opencv.hpp>
 
 #include "window.h"
-#include "state_space.h"
 #include "goal.h"
-#include "robot.h"
-#include "pfc.h"
+#include "grid_map.h"
 #include "mcl.h"
-#include "simulator.h"
+#include "robot.h"
 
 
 int main(int argc, const char *argv[])
@@ -28,29 +25,44 @@ int main(int argc, const char *argv[])
 
   std::vector<CmdVel> cmdVels{CmdVel(0.1, 0.0, "fw"), CmdVel(0.0, 0.5, "ccw"), CmdVel(0.0, -0.5, "cw")};
 
-  // Pose minPose(-5.0, -5.0, 0);
-  // Goal goal(Pose(6.75, 8.0, 0)+minPose, 0.15);
-  // StateSpace ss(std::string("CorridorGimp_200x200x36"), std::vector<int>{200, 200, 36},
-  //               std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose, cmdVel);
-
-  // Pose minPose(-2.5, -2.5, 0);
-  // Goal goal(Pose(6.75/2, 4.0, 0)+minPose, 0.15);
-  // StateSpace ss(std::string("CorridorGimp_100x100x18"), std::vector<int>{100, 100, 18},
-  //               std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose, cmdVels);
-
   Pose minPose(-2.5, -2.5, 0);
   Goal goal(Pose(3.5, 4.0, 0)+minPose, 0.15);
-  StateSpace ss(std::string("Gimp2Corner_100x100x18"), std::vector<int>{100, 100, 18},
-                std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose, cmdVels);
+  // GridMap gridMap(std::string("CorridorGimp_200x200"), minPose, std::vector<double>{0.05, 0.05});
+  // State state(std::string("CorridorGimp_200x200x36"), gridMap, cmdVels,
+  //             std::vector<int>{200, 200, 36}, std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose);
+  GridMap gridMap(std::string("CorridorGimp_100x100"), minPose, std::vector<double>{0.05, 0.05});
+  State state(std::string("CorridorGimp_100x100x18"), gridMap, cmdVels,
+              std::vector<int>{100, 100, 18}, std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose);
 
-  Pose initPose(-1.75, -1.5, M_PI/2);
+  Pose initPose(-1, -1, 0);
   Mcl mcl(initPose, 1000);
-  Pfc pfc(cmdVels, ss, 2.0);
+  Pfc pfc(cmdVels, state, 2.0);
   Robot robot(initPose, goal, mcl, pfc);
 
-  // シミュレーション
-  Simulator simulator(window, robot, goal);
-  simulator.run(true);
+
+  double prevTime = glfwGetTime();
+  // 描画のループ
+  while (window)
+  {
+    double currentTime = glfwGetTime();
+    double elapsedTime = currentTime - prevTime;
+
+    robot.oneStep(elapsedTime);
+
+    // バッファのクリア
+    glClearColor(0.9f, 0.9f, 0.9f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    // gridMap.draw();
+
+    goal.draw();
+    robot.draw();
+
+    // ダブルバッファのスワップ
+    window.swapBuffers();
+    glfwPollEvents();
+
+    prevTime = currentTime;
+  }
 
   // GLFWの終了処理
   glfwTerminate();

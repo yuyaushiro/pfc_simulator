@@ -25,14 +25,14 @@ add_executable(simulator.out
   src/cmd_vel.cpp
   src/goal.cpp
   src/line.cpp
+  src/grid_map.cpp
   src/mcl.cpp
   src/particle.cpp
   src/pfc.cpp
   src/point.cpp
   src/pose.cpp
   src/robot.cpp
-  src/simulator.cpp
-  src/state_space.cpp
+  # src/simulator.cpp
   src/state.cpp
   src/window.cpp
 )

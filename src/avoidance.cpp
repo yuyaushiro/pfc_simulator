@@ -45,10 +45,13 @@ void Avoidance::addWeightCandidate(double reward)
 //------------------------------------------------------------------------------
 void Avoidance::updateWeight(int candidateIndex)
 {
-  std::vector<double>::iterator maxIterator =
-    std::max_element(weightCandidates_.begin(), weightCandidates_.end());
-  weight_ = std::max(weight_, *maxIterator);
-  weightCandidates_.resize(0);
+  if (weightCandidates_.size() != 0)
+  {
+    std::vector<double>::iterator maxIterator =
+      std::max_element(weightCandidates_.begin(), weightCandidates_.end());
+    weight_ = std::max(weight_, *maxIterator);
+    weightCandidates_.resize(0);
+  }
   // weight_ = std::max(weight_, weightCandidates_[candidateIndex]);
   // weightCandidates_.resize(0);
 }
