@@ -15,7 +15,7 @@ public:
   GridMap();
 
   /// コンストラクタ
-  GridMap(const std::string& fileName, const Pose& minPose, const std::vector<double>& cellWidth);
+  GridMap(const std::string& fileName, const std::vector<double>& cellWidth, const Pose& minPose);
 
   /// 障害物の中？
   bool insideObstacle(const Pose& pose) const;
@@ -30,7 +30,7 @@ public:
   void setTexture();
 
   /// 描画
-  void draw();
+  void draw(GLfloat range);
 
 private:
   /// ファイル名

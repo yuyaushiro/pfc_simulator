@@ -25,14 +25,17 @@ int main(int argc, const char *argv[])
 
   std::vector<CmdVel> cmdVels{CmdVel(0.1, 0.0, "fw"), CmdVel(0.0, 0.5, "ccw"), CmdVel(0.0, -0.5, "cw")};
 
-  Pose minPose(-2.5, -2.5, 0);
-  Goal goal(Pose(3.5, 4.0, 0)+minPose, 0.15);
-  // GridMap gridMap(std::string("CorridorGimp_200x200"), minPose, std::vector<double>{0.05, 0.05});
-  // State state(std::string("CorridorGimp_200x200x36"), gridMap, cmdVels,
-  //             std::vector<int>{200, 200, 36}, std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose);
-  GridMap gridMap(std::string("CorridorGimp_100x100"), minPose, std::vector<double>{0.05, 0.05});
-  State state(std::string("CorridorGimp_100x100x18"), gridMap, cmdVels,
-              std::vector<int>{100, 100, 18}, std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose);
+  Pose minPose(-5.0, -5.0, 0);
+  Goal goal(Pose(7.0, 8.0, 0)+minPose, 0.15);
+  GridMap gridMap(std::string("CorridorGimp_200x200"), std::vector<double>{0.05, 0.05}, minPose);
+  State state(std::string("CorridorGimp_200x200x36"), gridMap, cmdVels,
+              std::vector<int>{200, 200, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
+
+  // Pose minPose(-2.5, -2.5, 0);
+  // Goal goal(Pose(3.5, 4.0, 0)+minPose, 0.15);
+  // GridMap gridMap(std::string("CorridorGimp_100x100"), minPose, std::vector<double>{0.05, 0.05});
+  // State state(std::string("CorridorGimp_100x100x18"), gridMap, cmdVels,
+  //             std::vector<int>{100, 100, 18}, std::vector<double>{0.05, 0.05, M_PI/9.0}, minPose);
 
   Pose initPose(-1, -1, 0);
   Mcl mcl(initPose, 1000);
@@ -52,8 +55,8 @@ int main(int argc, const char *argv[])
     // バッファのクリア
     glClearColor(0.9f, 0.9f, 0.9f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    // gridMap.draw();
 
+    gridMap.draw(abs(minPose.x));
     goal.draw();
     robot.draw();
 

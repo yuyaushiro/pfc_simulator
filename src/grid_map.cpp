@@ -11,7 +11,7 @@ GridMap::GridMap()
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-GridMap::GridMap(const std::string& fileName, const Pose& minPose, const std::vector<double>& cellWidth)
+GridMap::GridMap(const std::string& fileName, const std::vector<double>& cellWidth, const Pose& minPose)
   : fileName_("../map/" + fileName + ".png")
   , cellWidth_(cellWidth)
   , minPose_(minPose)
@@ -80,48 +80,51 @@ void GridMap::setTexture()
 
   // テクスチャへの登録
   glBindTexture(GL_TEXTURE_2D, textureId_);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, pixelNum_[0], pixelNum_[1], 0, GL_RGB, GL_UNSIGNED_BYTE,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, pixelNum_[0], pixelNum_[1], 0, GL_RGBA, GL_UNSIGNED_BYTE,
                image_.data);
 
   // 画像が収縮されたときの処理
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   // 画像が収縮されたときの処理
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_FALSE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 
 // 描画
 //------------------------------------------------------------------------------
-void GridMap::draw()
+void GridMap::draw(GLfloat range)
 {
-  glDrawPixels(pixelNum_[0], pixelNum_[1], GL_RGBA, GL_UNSIGNED_BYTE, image_.data);
+  glColor3f(1.0f, 1.0f, 1.0f);
+  const GLfloat vtx[] = {
+    -range, -range,
+    range, -range,
+    range, range,
+    -range, range
+   };
+  glVertexPointer(2, GL_FLOAT, 0, vtx);
+  // 頂点ごとのテクスチャ座標を配列で準備
+  const GLfloat texture_uv[] = {
+    0, 0,
+    1, 0,
+    1, 1,
+    0, 1,
+  };
+  glTexCoordPointer(2, GL_FLOAT, 0, texture_uv);
 
-  // const GLfloat vtx[] = {
-  //   -2.5f, -2.5f,
-  //   2.5f, -2.5f,
-  //   2.5f, 2.5f,
-  //   -2.5f, 2.5f
-  //  };
-  // glVertexPointer(2, GL_FLOAT, 0, vtx);
-  // // 頂点ごとのテクスチャ座標を配列で準備
-  // const GLfloat texture_uv[] = {
-  //   0, 0,
-  //   1, 0,
-  //   1, 1,
-  //   0, 1,
-  // };
-  // glTexCoordPointer(2, GL_FLOAT, 0, texture_uv);
+  // OpengGLにテクスチャによる描画を有効にすると指示
+  glEnable(GL_TEXTURE_2D);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-  // // OpengGLにテクスチャによる描画を有効にすると指示
-  // glEnable(GL_TEXTURE_2D);
-  // glEnableClientState(GL_VERTEX_ARRAY);
-  // glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  // 矩形を１つ描画
+  glDrawArrays(GL_QUADS, 0, 4);
 
-  // // 矩形を１つ描画
-  // glDrawArrays(GL_QUADS, 0, 4);
-
-  // // 描画が済んだら使った昨日を全て無効にする
-  // glDisable(GL_TEXTURE_2D);
-  // glDisableClientState(GL_VERTEX_ARRAY);
-  // glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  // 描画が済んだら使った昨日を全て無効にする
+  glDisable(GL_TEXTURE_2D);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }

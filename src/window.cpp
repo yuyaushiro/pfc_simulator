@@ -82,8 +82,8 @@ void Window::resize(GLFWwindow *const window, int width, int height)
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glOrtho(-xRange/2, xRange/2,
-          -yRange/2, yRange/2,
+  glOrtho(-xRange, xRange,
+          -yRange, yRange,
           -1.0, 1.0);
 
 }
