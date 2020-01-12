@@ -28,7 +28,7 @@ Mcl::Mcl(const Pose& initialPose, int particleNum)
   {
     Pose pose(x_dist(mt), y_dist(mt), theta_dist(mt));
     double weight = 1.0/particleNum_;
-    Avoidance avoidance(0.0, 4.0, 10.0);
+    Avoidance avoidance(0.0, 3.0, 10.0);
     Particle p(pose, weight, avoidance);
     particles_[i] = p;
   }
@@ -98,11 +98,6 @@ void Mcl::resampling()
       c = c + particles_[i].getWeight();
     }
     newParticles[m] = particles_[i];
-
-    // Pose pose = particles_[i].pose_;
-    // double weight = 1.0/particleNum_;
-    // Avoidance avoidance(particles_[i].getAvoidanceWeight(), 10.0, 10.0);
-    // newParticles[m] = Particle(pose, weight, avoidance);
   }
   particles_ = newParticles;
 }
