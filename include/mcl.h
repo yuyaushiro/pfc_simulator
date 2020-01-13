@@ -15,10 +15,14 @@ class Mcl
 public:
   /// コンストラクタ
   Mcl();
-  Mcl(const Pose& initialPose, int particleNum);
+  Mcl(const Pose& initialPose, int particleNum, int seedValue,
+      const std::vector<double> initPoseStd, const std::vector<double> motionStd);
 
   /// デストラクタ
   ~Mcl() = default;
+
+  /// 初期化
+  void init(const Pose& initialPose, const std::vector<double> initPoseStd);
 
   /// モーションアップデート
   void updateWithMotion(const CmdVel& cmdVel, double dt);
@@ -38,4 +42,10 @@ public:
 private:
   /// パーティクル数
   int particleNum_;
+
+  /// メルセンヌツイスター
+  std::mt19937 mt_;
+
+  /// 初期分布
+  std::vector<double> motionStd_;
 };

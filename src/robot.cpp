@@ -81,7 +81,7 @@ Pose Robot::getPose()
 
 // リスタート
 //------------------------------------------------------------------------------
-void Robot::restart(const Pose& pose)
+void Robot::restart(const Pose& pose, const std::vector<double> initPoseStd)
 {
   // ロボットの初期化
   pose_ = pose;
@@ -89,7 +89,7 @@ void Robot::restart(const Pose& pose)
   trajectory_[0] = pose;
 
   // 推定器の初期化
-  mcl_ = Mcl(pose, 1000);
+  mcl_.init(pose, initPoseStd);
 }
 
 

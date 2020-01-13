@@ -32,7 +32,7 @@ public:
   Pose getPose();
 
   /// リスタート
-  void restart(const Pose& pose);
+  void restart(const Pose& pose, const std::vector<double> initPoseStd);
 
   /// 描画する
   void draw();
