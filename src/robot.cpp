@@ -12,14 +12,38 @@ Robot::Robot()
 
 // コンストラクタ
 //------------------------------------------------------------------------------
-Robot::Robot(const Pose& initialPose, const Goal& goal, const Mcl& mcl, const Pfc& pfc)
+Robot::Robot(const Pose& initialPose, const Goal& goal, const Mcl& mcl, const Pfc& pfc,
+             int seedValue, const std::vector<double> motionStd)
   : pose_(initialPose)
   , goal_(goal)
   , mcl_(mcl)
   , pfc_(pfc)
+  , mt_(seedValue)
+  , motionStd_(motionStd)
   , trajectory_{initialPose}
   , radius_(0.1)
 {}
+
+
+// 状態を遷移させる
+//------------------------------------------------------------------------------
+Pose Robot::transitionStateWithNoise(const CmdVel& cmdVel, double dt, const Pose& pose)
+{
+  //乱数生成クラス
+  std::normal_distribution<> nuDist(0, motionStd_[0]);
+  std::normal_distribution<> omegaDist(0, motionStd_[1]);
+
+  // 乱数生成
+  std::vector<double> ns{nuDist(mt_), 0.0, 0.0, omegaDist(mt_)};
+
+  double pnu = cmdVel.nu + ns[0]*sqrt(abs(cmdVel.nu)/dt) + ns[1]*sqrt(abs(cmdVel.omega)/dt);
+  double pomega = cmdVel.omega + ns[2]*sqrt(abs(cmdVel.nu)/dt) + ns[3]*sqrt(abs(cmdVel.omega)/dt);
+
+  // ノイズを含んだ行動
+  CmdVel noisyCmdVel(pnu, pomega, "");
+  pose_ = Robot::transitionState(noisyCmdVel, dt, pose_);
+  return pose_;
+}
 
 
 // 状態を遷移させる
@@ -54,7 +78,9 @@ void Robot::oneStep(double dt)
   CmdVel cmdVel = pfc_.decisionMaking(mcl_.particles_, dt);
 
   // 状態遷移
-  pose_ = Robot::transitionState(cmdVel, dt, pose_);
+  // pose_ = Robot::transitionState(cmdVel, dt, pose_);
+  pose_ = Robot::transitionStateWithNoise(cmdVel, dt, pose_);
+
   // 推定器のモーションアップデート
   mcl_.updateWithMotion(cmdVel, dt);
 
@@ -81,9 +107,13 @@ Pose Robot::getPose()
 
 // リスタート
 //------------------------------------------------------------------------------
-void Robot::restart(const Pose& pose, const std::vector<double> initPoseStd)
+void Robot::restart(const Pose& initialPose, const std::vector<double> initPoseStd)
 {
   // ロボットの初期化
+  std::normal_distribution<double> xDist(initialPose.x, initPoseStd[0]);
+  std::normal_distribution<double> yDist(initialPose.y, initPoseStd[1]);
+  std::normal_distribution<double> thetaDist(initialPose.theta, initPoseStd[2]);
+  Pose pose(xDist(mt_), yDist(mt_), thetaDist(mt_));
   pose_ = pose;
   trajectory_.resize(1);
   trajectory_[0] = pose;

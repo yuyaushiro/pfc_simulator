@@ -22,7 +22,7 @@ Mcl::Mcl(const Pose& initialPose, int particleNum, int seedValue,
 }
 
 
-// 状態を遷移させる
+// 初期化
 //------------------------------------------------------------------------------
 void Mcl::init(const Pose& initialPose, const std::vector<double> initPoseStd)
 {
@@ -36,7 +36,7 @@ void Mcl::init(const Pose& initialPose, const std::vector<double> initPoseStd)
   {
     Pose pose(xDist(mt_), yDist(mt_), thetaDist(mt_));
     double weight = 1.0/particleNum_;
-    Avoidance avoidance(0.0, 2.0, 10.0);
+    Avoidance avoidance(0.0, 4.0, 10.0);
     Particle p(pose, weight, avoidance);
     particles_[i] = p;
   }
@@ -53,7 +53,7 @@ void Mcl::updateWithMotion(const CmdVel& cmdVel, double dt)
 
   for (int i = 0; i < particleNum_; i++)
   {
-    // 乱数生成j
+    // 乱数生成
     std::vector<double> ns{nuDist(mt_), 0.0, 0.0, omegaDist(mt_)};
 
     particles_[i].updateWithMotion(cmdVel, dt, ns);

@@ -17,10 +17,14 @@ public:
   Robot();
 
   /// コンストラクタ
-  Robot(const Pose& initialPose, const Goal& goal, const Mcl& mcl, const Pfc& pfc);
+  Robot(const Pose& initialPose, const Goal& goal, const Mcl& mcl, const Pfc& pfc,
+        int seedValue, const std::vector<double> motionStd);
 
   /// デストラクタ
   ~Robot() = default;
+
+  /// 状態を遷移させる（ノイズあり）
+  Pose transitionStateWithNoise(const CmdVel& cmdVel, double dt, const Pose& pose);
 
   /// 状態を遷移させる
   static Pose transitionState(const CmdVel& cmdVel, double dt, const Pose& pose);
@@ -32,7 +36,7 @@ public:
   Pose getPose();
 
   /// リスタート
-  void restart(const Pose& pose, const std::vector<double> initPoseStd);
+  void restart(const Pose& initialPose, const std::vector<double> initPoseStd);
 
   /// 描画する
   void draw();
@@ -49,6 +53,12 @@ private:
 
   /// エージェント
   Pfc pfc_;
+
+  /// メルセンヌツイスター
+  std::mt19937 mt_;
+
+  /// 動作ノイズ
+  std::vector<double> motionStd_;
 
   /// 軌跡
   std::vector<Pose> trajectory_;

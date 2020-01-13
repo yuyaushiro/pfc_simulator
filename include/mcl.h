@@ -46,6 +46,6 @@ private:
   /// メルセンヌツイスター
   std::mt19937 mt_;
 
-  /// 初期分布
+  /// 動作ノイズ
   std::vector<double> motionStd_;
 };

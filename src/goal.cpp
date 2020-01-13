@@ -37,10 +37,10 @@ void Goal::draw()
 {
   Circle region(0, 0, radius_, 1);
   Point point1(0, 0);
-  GLfloat poleLength = 0.6;
-  GLfloat flagUnder = 0.4;
+  GLfloat poleLength = 0.3;
+  GLfloat flagUnder = 0.2;
   Line pole(point1, M_PI/2, (double)poleLength, 1);
-  GLfloat const vtx[] = {0, flagUnder, 0, poleLength, 0.2, (flagUnder+poleLength)/2};
+  GLfloat const vtx[] = {0, flagUnder, 0, poleLength, 0.1, (flagUnder+poleLength)/2};
   glPushMatrix();
     glTranslated(pose_.x, pose_.y, 0.0);
     region.draw();

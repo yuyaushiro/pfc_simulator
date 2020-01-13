@@ -26,7 +26,7 @@ int main(int argc, const char *argv[])
   std::vector<CmdVel> cmdVels{CmdVel(0.1, 0.0, "fw"), CmdVel(0.0, 0.5, "ccw"), CmdVel(0.0, -0.5, "cw")};
 
   Pose minPose(-2.5, -2.5, 0);
-  Goal goal(Pose(3.75, 3.75, 0)+minPose, 0.15);
+  Goal goal(Pose(3.75, 3.75, 0)+minPose, 0.1);
   GridMap gridMap(std::string("Gimp2Corner_100x100"), std::vector<double>{0.05, 0.05}, minPose);
   State state(std::string("Gimp2Corner_100x100x36"), gridMap, cmdVels,
               std::vector<int>{100, 100, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
@@ -37,13 +37,21 @@ int main(int argc, const char *argv[])
   // State state(std::string("Gimp2Corner_200x200x36"), gridMap, cmdVels,
   //             std::vector<int>{200, 200, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
 
+  // 初期姿勢
   Pose initPose(-1.75, 0.75, 0);
+  // 初期姿勢のばらつき
   std::vector<double> initPoseStd{0.1, 0.1, 0.05};
-  std::vector<double> motionStd{0.02, 0.02};
+  // 動作のばらつき
+  std::vector<double> motionStd{0.02, 0.01};
+  // 乱数シード
   std::random_device rnd;
+  // 自己位置推定
   Mcl mcl(initPose, 1000, rnd(), initPoseStd, motionStd);
-  Pfc pfc(cmdVels, state, 1.0);
-  Robot robot(initPose, goal, mcl, pfc);
+  // エージェント
+  Pfc pfc(cmdVels, state, 2.0);
+  // ロボット
+  Robot robot(initPose, goal, mcl, pfc, rnd(), motionStd);
+  robot.restart(initPose, initPoseStd);
 
   double prevTime = glfwGetTime();
   // 描画のループ
@@ -66,7 +74,7 @@ int main(int argc, const char *argv[])
     // ゴールしたら
     if (goal.inside(robot.getPose()))
     {
-      // robot.restart(initPose, initPoseStd);
+      robot.restart(initPose, initPoseStd);
       std::cout << "ゴール" << std::endl;
     }
     // 脱輪したら
