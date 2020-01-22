@@ -35,6 +35,9 @@ public:
   /// 姿勢の取得
   Pose getPose();
 
+  /// パーティクルの取得
+  std::vector<Particle>& getParticles();
+
   /// リスタート
   void restart(const Pose& initialPose, const std::vector<double> initPoseStd);
 

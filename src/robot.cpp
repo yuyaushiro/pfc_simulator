@@ -105,6 +105,14 @@ Pose Robot::getPose()
 }
 
 
+// 姿勢を取得
+//------------------------------------------------------------------------------
+std::vector<Particle>& Robot::getParticles()
+{
+  return mcl_.particles_;
+}
+
+
 // リスタート
 //------------------------------------------------------------------------------
 void Robot::restart(const Pose& initialPose, const std::vector<double> initPoseStd)

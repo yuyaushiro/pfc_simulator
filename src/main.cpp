@@ -8,6 +8,7 @@
 #include "grid_map.h"
 #include "mcl.h"
 #include "robot.h"
+#include "saver.h"
 
 
 int main(int argc, const char *argv[])
@@ -53,13 +54,15 @@ int main(int argc, const char *argv[])
   Robot robot(initPose, goal, mcl, pfc, rnd(), motionStd);
   robot.restart(initPose, initPoseStd);
 
+  // セーブ
+  Saver saver(std::string("aaa"), gridMap, goal);
+
   double prevTime = glfwGetTime();
   // 描画のループ
   while (window)
   {
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - prevTime;
-
     // robot.oneStep(elapsedTime);
     robot.oneStep(0.1);
 
@@ -67,22 +70,28 @@ int main(int argc, const char *argv[])
     glClearColor(0.9f, 0.9f, 0.9f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    // 表示
     gridMap.draw(abs(minPose.x));
     goal.draw();
     robot.draw();
 
+
+    saver.saveOneStep(robot.getParticles());
     // ゴールしたら
     if (goal.inside(robot.getPose()))
     {
+      saver.saveOneTrial(true);
       robot.restart(initPose, initPoseStd);
-      std::cout << "ゴール" << std::endl;
+      // std::cout << "ゴール" << std::endl;
     }
     // 脱輪したら
     if (gridMap.insideObstacle(robot.getPose()))
     {
+      saver.saveOneTrial(false);
       robot.restart(initPose, initPoseStd);
-      std::cout << "脱輪" << std::endl;
+      // std::cout << "脱輪" << std::endl;
     }
+
 
     // ダブルバッファのスワップ
     window.swapBuffers();
