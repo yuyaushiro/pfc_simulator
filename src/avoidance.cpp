@@ -11,7 +11,7 @@ Avoidance::Avoidance()
 //------------------------------------------------------------------------------
 Avoidance::Avoidance(double weight, double maxWeight, double decreaseTime)
   : weight_(weight)
-  , minWeight_(0.0)
+  , minWeight_(1.0)
   , maxWeight_(maxWeight)
   , decreaseTime_(decreaseTime)
 {}

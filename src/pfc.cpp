@@ -73,15 +73,18 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particle
     postValue = state_.getPosteriorValue(pose, cmdVel);
     // 状態遷移の報酬
     reward = state_.getReward(pose, cmdVel);
-    // 行動価値
-    actionValue = postValue + reward;
-
     // 回避重み
     particles[i].addAvoidanceWeightCandidate(reward);
     double avoidWeight = particles[i].getAvoidanceWeight();
 
-    pfcValue += actionValue / std::pow(abs(state_.getValue(pose)), magnitude_-avoidWeight);
-    // pfcValue += actionValue / std::pow(abs(state_.getValue(pose)), magnitude_);
+    // 行動価値
+    actionValue = -std::pow(abs(postValue), avoidWeight) + reward;
+    // actionValue = postValue + reward;
+
+    pfcValue += actionValue / std::pow(abs(state_.getValue(pose)), magnitude_);
+    // pfcValue += actionValue / std::pow(abs(state_.getValue(pose)), magnitude_-avoidWeight);
+    // pfcValue += -std::pow(abs(actionValue), avoidWeight) / std::pow(abs(state_.getValue(pose)), magnitude_);
+    // pfcValue += actionValue*avoidWeight / std::pow(abs(state_.getValue(pose)), magnitude_);
   }
   return pfcValue;
 }

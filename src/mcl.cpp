@@ -36,7 +36,7 @@ void Mcl::init(const Pose& initialPose, const std::vector<double> initPoseStd)
   {
     Pose pose(xDist(mt_), yDist(mt_), thetaDist(mt_));
     double weight = 1.0/particleNum_;
-    Avoidance avoidance(0.0, 2.0, 10.0);
+    Avoidance avoidance(0.0, 3.0, 10.0);
     Particle p(pose, weight, avoidance);
     particles_[i] = p;
   }

@@ -47,7 +47,7 @@ int main(int argc, const char *argv[])
   // 乱数シード
   std::random_device rnd;
   // 自己位置推定
-  Mcl mcl(initPose, 1000, rnd(), initPoseStd, motionStd);
+  Mcl mcl(initPose, 500, rnd(), initPoseStd, motionStd);
   // エージェント
   Pfc pfc(cmdVels, state, 2.0);
   // ロボット
