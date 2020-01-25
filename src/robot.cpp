@@ -91,6 +91,8 @@ void Robot::oneStep(double dt)
 
   // 推定器のリサンプリング
   mcl_.resampling();
+  // 平均姿勢を計算
+  mcl_.calcAveragePose();
 
   // 軌跡の追加
   trajectory_.push_back(pose_);

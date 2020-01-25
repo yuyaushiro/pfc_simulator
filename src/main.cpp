@@ -56,7 +56,7 @@ int main(int argc, const char *argv[])
   robot.restart(initPose, initPoseStd);
 
   // セーブ
-  Saver saver(std::string("mean"), gridMap, goal);
+  Saver saver(std::string("average-mdp"), gridMap, goal);
 
   double prevTime = glfwGetTime();
   // 描画のループ

@@ -33,11 +33,17 @@ public:
   /// リサンプリング
   void resampling();
 
+  /// 平均姿勢を計算
+  void calcAveragePose();
+
   /// 描画
   void draw();
 
   /// パーティクル
   std::vector<Particle> particles_;
+
+  /// 平均姿勢
+  Pose averagePose_;
 
 private:
   /// パーティクル数

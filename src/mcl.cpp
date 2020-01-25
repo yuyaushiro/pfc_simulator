@@ -40,6 +40,8 @@ void Mcl::init(const Pose& initialPose, const std::vector<double> initPoseStd)
     Particle p(pose, weight, avoidance);
     particle = p;
   }
+
+  calcAveragePose();
 }
 
 
@@ -104,6 +106,29 @@ void Mcl::resampling()
   particles_ = newParticles;
 }
 
+
+// 平均姿勢を推定
+//------------------------------------------------------------------------------
+void Mcl::calcAveragePose()
+{
+  double sumX, sumY, sumCosTheta, sumSinTheta;
+  std::vector< std::vector<double> > vecs(particles_.size());
+  for (int i = 0; i < particleNum_; i++)
+  {
+    sumX += particles_[i].pose_.x;
+    sumY += particles_[i].pose_.y;
+    double theta = particles_[i].pose_.theta;
+    sumCosTheta += cos(theta);
+    sumSinTheta += sin(theta);
+  }
+  double avgX = sumX / particleNum_;
+  double avgY = sumY / particleNum_;
+  double avgCosTheta = sumCosTheta / particleNum_;
+  double avgSinTheta = sumSinTheta / particleNum_;
+  double avgTheta = atan2(avgSinTheta, avgCosTheta);
+
+  averagePose_ = Pose(avgX, avgY, avgTheta);
+}
 
 // 描画
 //------------------------------------------------------------------------------
