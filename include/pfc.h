@@ -22,9 +22,15 @@ public:
   /// 意思決定
   CmdVel decisionMaking(std::vector<Particle>& particles, double dt);
 
+  /// 意思決定（決定論的）
+  CmdVel decisionMaking(Pose& pose, double dt);
+
 private:
   /// 行動の評価（Q-PFCの計算）
   double evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particles);
+
+  /// 行動の評価（Qの計算）
+  double evaluateAction(const CmdVel& cmdVel, Pose& pose);
 
 private:
   /// 行動リスト

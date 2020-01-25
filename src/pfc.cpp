@@ -87,3 +87,41 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particle
   }
   return pfcValue;
 }
+
+
+// 意思決定（決定論的）
+//------------------------------------------------------------------------------
+CmdVel Pfc::decisionMaking(Pose& pose, double dt)
+{
+  // 行動価値のリスト
+  std::vector<double> actionValues(cmdVels_.size());
+  for (int i = 0; i < cmdVels_.size(); i++)
+  {
+    actionValues[i] = evaluateAction(cmdVels_[i], pose);
+    // std::cout << actionValues[i] << std::endl;
+  }
+
+  // argmax
+  std::vector<double>::iterator maxIterator = std::max_element(actionValues.begin(), actionValues.end());
+  int maxIndex = std::distance(actionValues.begin(), maxIterator);
+  // std::cout << maxIndex << std::endl;
+  // std::cout << std::endl;
+
+  return cmdVels_[maxIndex];
+}
+
+
+// 行動の評価（Q-PFCの計算）
+//------------------------------------------------------------------------------
+double Pfc::evaluateAction(const CmdVel& cmdVel, Pose& pose)
+{
+  // 次の状態の価値
+  double postValue = state_.getPosteriorValue(pose, cmdVel);
+  // 状態遷移の報酬
+  double reward = state_.getReward(pose, cmdVel);
+
+  // 行動価値
+  double actionValue = postValue + reward;
+
+  return actionValue;
+}
