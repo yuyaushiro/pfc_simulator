@@ -127,7 +127,7 @@ void Robot::restart(const Pose& initialPose, const std::vector<double> initPoseS
   trajectory_[0] = pose;
 
   // 推定器の初期化
-  mcl_.init(pose, initPoseStd);
+  mcl_.init(initialPose, initPoseStd);
 }
 
 

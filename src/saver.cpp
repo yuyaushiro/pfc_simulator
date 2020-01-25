@@ -41,7 +41,7 @@ void Saver::saveOneStep(const std::vector<Particle>& particles)
 //------------------------------------------------------------------------------
 void Saver::saveOneTrial(bool goal)
 {
-  std::cout << goal << ", " << elapsedTime_ << ", " << particlesInObstacle_ << std::endl;
+  std::cout << goal << ", " << elapsedTime_*0.1 << ", " << particlesInObstacle_*0.1 << std::endl;
   elapsedTime_ = 0;
   particlesInObstacle_ = 0;
 }

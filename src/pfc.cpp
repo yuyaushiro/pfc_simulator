@@ -83,8 +83,7 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particle
 
     pfcValue += actionValue / std::pow(abs(state_.getValue(pose)), magnitude_);
     // pfcValue += actionValue / std::pow(abs(state_.getValue(pose)), magnitude_-avoidWeight);
-    // pfcValue += -std::pow(abs(actionValue), avoidWeight) / std::pow(abs(state_.getValue(pose)), magnitude_);
-    // pfcValue += actionValue*avoidWeight / std::pow(abs(state_.getValue(pose)), magnitude_);
+    // pfcValue += actionValue / std::pow(abs(state_.getValue(pose)), 0);
   }
   return pfcValue;
 }

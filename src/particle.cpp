@@ -98,12 +98,12 @@ void Particle::draw()
     glTranslated(pose_.x, pose_.y, 0.0);
     glRotated(pose_.theta*180/M_PI, 0, 0, 1);
     // 方向の描画
-    (avoidance_.getWeight() == 0.0) ?
+    (avoidance_.getWeight() == 1.0) ?
       glColor4f(0.5f, 0.5f, 1.0f, 0.5f) :
       glColor4f(1.0f, 0.5f, 0.5f, 0.5f);
     rotation.draw();
     // 位置の描画
-    (avoidance_.getWeight() == 0.0) ?
+    (avoidance_.getWeight() == 1.0) ?
       glColor4f(0.0f, 0.0f, 1.0f, 0.5f) :
       glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
     glRectf(-radius_, -radius_, radius_, radius_);

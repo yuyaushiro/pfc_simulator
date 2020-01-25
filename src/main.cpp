@@ -24,26 +24,27 @@ int main(int argc, const char *argv[])
   // ウィンドウの生成
   Window window;
 
-  std::vector<CmdVel> cmdVels{CmdVel(0.1, 0.0, "fw"), CmdVel(0.0, 0.5, "ccw"), CmdVel(0.0, -0.5, "cw")};
+  // std::vector<CmdVel> cmdVels{CmdVel(0.1, 0.0, "fw"), CmdVel(0.0, 0.5, "ccw"), CmdVel(0.0, -0.5, "cw")};
+  std::vector<CmdVel> cmdVels{CmdVel(0.2, 0.0, "fw"), CmdVel(0.0, 1.0, "ccw"), CmdVel(0.0, -1.0, "cw")};
 
-  Pose minPose(-2.5, -2.5, 0);
-  Goal goal(Pose(3.75, 3.75, 0)+minPose, 0.1);
-  GridMap gridMap(std::string("Gimp2Corner_100x100"), std::vector<double>{0.05, 0.05}, minPose);
-  State state(std::string("Gimp2Corner_100x100x36"), gridMap, cmdVels,
-              std::vector<int>{100, 100, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
+  // Pose minPose(-2.5, -2.5, 0);
+  // Goal goal(Pose(3.75, 3.75, 0)+minPose, 0.1);
+  // GridMap gridMap(std::string("GimpCorner_100x100"), std::vector<double>{0.05, 0.05}, minPose);
+  // State state(std::string("GimpCorner_100x100x36"), gridMap, cmdVels,
+  //             std::vector<int>{100, 100, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
 
-  // Pose minPose(-5.0, -5.0, 0);
-  // Goal goal(Pose(7.5, 7.5, 0)+minPose, 0.15);
-  // GridMap gridMap(std::string("Gimp2Corner_200x200"), std::vector<double>{0.05, 0.05}, minPose);
-  // State state(std::string("Gimp2Corner_200x200x36"), gridMap, cmdVels,
-  //             std::vector<int>{200, 200, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
+  Pose minPose(-5.0, -5.0, 0);
+  Goal goal(Pose(6.0, 7.5, 0)+minPose, 0.1);
+  GridMap gridMap(std::string("Gimp1Corner_200x200"), std::vector<double>{0.05, 0.05}, minPose);
+  State state(std::string("Gimp1Corner_200x200x36"), gridMap, cmdVels,
+              std::vector<int>{200, 200, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
 
   // 初期姿勢
-  Pose initPose(-1.75, 0.75, 0);
+  Pose initPose(-3.0, -2.5, 0);
   // 初期姿勢のばらつき
-  std::vector<double> initPoseStd{0.1, 0.1, 0.05};
+  std::vector<double> initPoseStd{0.2, 0.2, 0.01};
   // 動作のばらつき
-  std::vector<double> motionStd{0.02, 0.01};
+  std::vector<double> motionStd{0.01, 0.03};
   // 乱数シード
   std::random_device rnd;
   // 自己位置推定
