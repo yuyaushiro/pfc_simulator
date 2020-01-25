@@ -34,21 +34,21 @@ int main(int argc, const char *argv[])
   //             std::vector<int>{100, 100, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
 
   Pose minPose(-5.0, -5.0, 0);
-  Goal goal(Pose(6.0, 7.5, 0)+minPose, 0.1);
+  Goal goal(Pose(6.0, 7.5, 0)+minPose, 0.15);
   GridMap gridMap(std::string("Gimp1Corner_200x200"), std::vector<double>{0.05, 0.05}, minPose);
   State state(std::string("Gimp1Corner_200x200x36"), gridMap, cmdVels,
               std::vector<int>{200, 200, 36}, std::vector<double>{0.05, 0.05, M_PI/18.0}, minPose);
 
   // 初期姿勢
-  Pose initPose(-3.0, -2.5, 0);
+  Pose initPose(-3.0, -3.0, 0);
   // 初期姿勢のばらつき
-  std::vector<double> initPoseStd{0.2, 0.2, 0.01};
+  std::vector<double> initPoseStd{0.3, 0.3, 0.03};
   // 動作のばらつき
-  std::vector<double> motionStd{0.01, 0.03};
+  std::vector<double> motionStd{0.01, 0.01};
   // 乱数シード
   std::random_device rnd;
   // 自己位置推定
-  Mcl mcl(initPose, 500, rnd(), initPoseStd, motionStd);
+  Mcl mcl(initPose, 1000, rnd(), initPoseStd, motionStd);
   // エージェント
   Pfc pfc(cmdVels, state, 2.0);
   // ロボット
@@ -86,7 +86,7 @@ int main(int argc, const char *argv[])
       // std::cout << "ゴール" << std::endl;
     }
     // 脱輪したら
-    if (gridMap.insideObstacle(robot.getPose()))
+    if (gridMap.insideObstacle(robot.getPose()) || saver.elapsedTime_ >= 3000)
     {
       saver.saveOneTrial(false);
       robot.restart(initPose, initPoseStd);

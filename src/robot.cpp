@@ -21,7 +21,7 @@ Robot::Robot(const Pose& initialPose, const Goal& goal, const Mcl& mcl, const Pf
   , mt_(seedValue)
   , motionStd_(motionStd)
   , trajectory_{initialPose}
-  , radius_(0.1)
+  , radius_(0.15)
 {}
 
 
