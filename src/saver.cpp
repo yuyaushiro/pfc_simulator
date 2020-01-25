@@ -11,11 +11,12 @@ Saver::Saver()
 //------------------------------------------------------------------------------
 Saver::Saver(const std::string& saveFileName, const GridMap& gridMap,
              const Goal& goal)
-  : saveFileName_("../save/" + saveFileName + ".save")
+  : saveFileName_("../save/" + saveFileName + ".csv")
   , ofs_(saveFileName_)
   , gridMap_(gridMap)
   , elapsedTime_(0)
   , particlesInObstacle_(0)
+  , trialNum_(1)
 {
 }
 
@@ -41,9 +42,11 @@ void Saver::saveOneStep(const std::vector<Particle>& particles)
 //------------------------------------------------------------------------------
 void Saver::saveOneTrial(bool goal)
 {
-  std::cout << goal << ", " << elapsedTime_*0.1 << ", " << particlesInObstacle_*0.1 << std::endl;
+  ofs_ << trialNum_ << ", " << goal << ", " << elapsedTime_*0.1 << ", " << particlesInObstacle_*0.1 << std::endl;
+  std::cout << trialNum_ << ", " << goal << ", " << elapsedTime_*0.1 << ", " << particlesInObstacle_*0.1 << std::endl;
   elapsedTime_ = 0;
   particlesInObstacle_ = 0;
+  trialNum_++;
 }
 
 

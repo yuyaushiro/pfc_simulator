@@ -37,6 +37,9 @@ public:
   /// パーティクルが障害物内にいた時間
   long particlesInObstacle_;
 
+  /// 試行回数
+  long trialNum_;
+
 private:
   /// 保存ファイル名
   std::string saveFileName_;

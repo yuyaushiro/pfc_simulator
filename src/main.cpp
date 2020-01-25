@@ -56,11 +56,11 @@ int main(int argc, const char *argv[])
   robot.restart(initPose, initPoseStd);
 
   // セーブ
-  Saver saver(std::string("aaa"), gridMap, goal);
+  Saver saver(std::string("mean"), gridMap, goal);
 
   double prevTime = glfwGetTime();
   // 描画のループ
-  while (window)
+  while (window && saver.trialNum_ <= 100)
   {
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - prevTime;
