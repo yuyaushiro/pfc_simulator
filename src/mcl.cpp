@@ -32,13 +32,13 @@ void Mcl::init(const Pose& initialPose, const std::vector<double> initPoseStd)
 
   // パーティクルの初期化
   particles_.resize(particleNum_);
-  for (int i = 0; i < particleNum_; i++)
+  for (Particle& particle : particles_)
   {
     Pose pose(xDist(mt_), yDist(mt_), thetaDist(mt_));
     double weight = 1.0/particleNum_;
     Avoidance avoidance(0.0, 3.0, 10.0);
     Particle p(pose, weight, avoidance);
-    particles_[i] = p;
+    particle = p;
   }
 }
 
@@ -51,12 +51,12 @@ void Mcl::updateWithMotion(const CmdVel& cmdVel, double dt)
   std::normal_distribution<> nuDist(0, motionStd_[0]);
   std::normal_distribution<> omegaDist(0, motionStd_[1]);
 
-  for (int i = 0; i < particleNum_; i++)
+  for (Particle& particle : particles_)
   {
     // 乱数生成
     std::vector<double> ns{nuDist(mt_), 0.0, 0.0, omegaDist(mt_)};
 
-    particles_[i].updateWithMotion(cmdVel, dt, ns);
+    particle.updateWithMotion(cmdVel, dt, ns);
   }
 }
 
@@ -65,9 +65,9 @@ void Mcl::updateWithMotion(const CmdVel& cmdVel, double dt)
 //------------------------------------------------------------------------------
 void Mcl::updateWithGoalObservation(const Goal& goal)
 {
-  for (int i = 0; i < particleNum_; i++)
+  for (Particle& particle : particles_)
   {
-    particles_[i].updateWithGoalObservation(goal);
+    particle.updateWithGoalObservation(goal);
   }
 }
 
@@ -78,8 +78,8 @@ void Mcl::resampling()
 {
   double weightSum = 0.0;
   // 重み合計
-  for (int i = 0; i < particleNum_; i++)
-    weightSum += particles_[i].getWeight();
+  for (Particle& particle : particles_)
+    weightSum += particle.getWeight();
 
   //乱数生成クラス
   std::uniform_real_distribution<double> dist(0, weightSum/particleNum_);
@@ -109,8 +109,8 @@ void Mcl::resampling()
 //------------------------------------------------------------------------------
 void Mcl::draw()
 {
-  for (int i = 0; i < particleNum_; i++)
+  for (Particle& particle : particles_)
   {
-    particles_[i].draw();
+    particle.draw();
   }
 }

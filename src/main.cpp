@@ -48,7 +48,7 @@ int main(int argc, const char *argv[])
   // 乱数シード
   std::random_device rnd;
   // 自己位置推定
-  Mcl mcl(initPose, 1000, rnd(), initPoseStd, motionStd);
+  Mcl mcl(initPose, 500, rnd(), initPoseStd, motionStd);
   // エージェント
   Pfc pfc(cmdVels, state, 2.0);
   // ロボット
@@ -65,6 +65,7 @@ int main(int argc, const char *argv[])
     double currentTime = glfwGetTime();
     double elapsedTime = currentTime - prevTime;
     // robot.oneStep(elapsedTime);
+    // std::cout << elapsedTime << std::endl;
     robot.oneStep(0.1);
 
     // バッファのクリア

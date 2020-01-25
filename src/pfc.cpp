@@ -38,10 +38,10 @@ CmdVel Pfc::decisionMaking(std::vector<Particle>& particles, double dt)
   // std::cout << std::endl;
 
   // 回避重みを更新する
-  for (int i = 0; i < particles.size(); i++)
+  for (Particle& particle : particles)
   {
-    particles[i].decreaseAvoidanceWeight(dt);
-    particles[i].updateAvoidanceWeight(maxIndex);
+    particle.decreaseAvoidanceWeight(dt);
+    particle.updateAvoidanceWeight(maxIndex);
   }
 
   CmdVel cmdVel = cmdVels_[maxIndex];
@@ -65,17 +65,17 @@ double Pfc::evaluateAction(const CmdVel& cmdVel, std::vector<Particle>& particle
   double postValue = 0.0;
   double actionValue = 0.0;
   double pfcValue = 0.0;
-  for (int i = 0; i < particles.size(); i++)
+  for (Particle& particle : particles)
   {
-    Pose pose = particles[i].pose_;
+    Pose pose = particle.pose_;
 
     // 次の状態の価値
     postValue = state_.getPosteriorValue(pose, cmdVel);
     // 状態遷移の報酬
     reward = state_.getReward(pose, cmdVel);
     // 回避重み
-    particles[i].addAvoidanceWeightCandidate(reward);
-    double avoidWeight = particles[i].getAvoidanceWeight();
+    particle.addAvoidanceWeightCandidate(reward);
+    double avoidWeight = particle.getAvoidanceWeight();
 
     // 行動価値
     actionValue = -std::pow(abs(postValue), avoidWeight) + reward;
