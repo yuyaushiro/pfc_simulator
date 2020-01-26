@@ -56,7 +56,7 @@ int main(int argc, const char *argv[])
   robot.restart(initPose, initPoseStd);
 
   // セーブ
-  Saver saver(std::string("average-mdp"), gridMap, goal);
+  Saver saver(std::string("q-mdp"), gridMap, goal);
 
   double prevTime = glfwGetTime();
   // 描画のループ
@@ -88,6 +88,7 @@ int main(int argc, const char *argv[])
     }
     // 脱輪したら
     if (gridMap.insideObstacle(robot.getPose()) || saver.elapsedTime_ >= 3000)
+    // if (gridMap.insideObstacle(robot.getPose()) || saver.elapsedTime_ >= 1200)
     {
       saver.saveOneTrial(false);
       robot.restart(initPose, initPoseStd);

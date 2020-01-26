@@ -75,8 +75,9 @@ Pose Robot::transitionState(const CmdVel& cmdVel, double dt, const Pose& pose)
 void Robot::oneStep(double dt)
 {
   // 意思決定
-  // CmdVel cmdVel = pfc_.decisionMaking(mcl_.particles_, dt);
-  CmdVel cmdVel = pfc_.decisionMaking(mcl_.averagePose_, dt);
+  CmdVel cmdVel = pfc_.decisionMaking(mcl_.particles_, dt);
+  // CmdVel cmdVel = pfc_.decisionMaking(mcl_.averagePose_, dt);
+  // CmdVel cmdVel = pfc_.decisionMaking(pose_, dt);
 
   // 状態遷移
   // pose_ = Robot::transitionState(cmdVel, dt, pose_);
